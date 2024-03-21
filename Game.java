@@ -11,8 +11,8 @@
  *  rooms, creates the parser and starts the game.  It also evaluates and
  *  executes the commands that the parser returns.
  * 
- * @author  Michael Kölling and David J. Barnes
- * @version 2016.02.29
+ * @author  Collie Clarke
+ * @version 2024.03.11
  */
 
 public class Game 
@@ -30,36 +30,104 @@ public class Game
     }
 
     /**
+     * Adding the look command.
+     */
+    private void look()
+    {
+        System.out.println(currentRoom.getLongDescription());
+    }
+    
+    /**
+     * Adding the eat command.
+     */
+    private void eat()
+    {
+        System.out.println("You have eaten now and you are not hungry any more.");
+    }
+    
+    /**
      * Create all the rooms and link their exits together.
      */
     private void createRooms()
     {
-        Room outside, theater, pub, lab, office;
+        Room oneA, oneB, two, three, four, five, six, seven, eight, nine, ten, eleven, twelve, thirteen, fourteen, fifthteen;        
       
         // create the rooms
-        outside = new Room("outside the main entrance of the university");
-        theater = new Room("in a lecture theater");
-        pub = new Room("in the campus pub");
-        lab = new Room("in a computing lab");
-        office = new Room("in the computing admin office");
+        oneA = new Room("Your at the entrance of the dungen");
+        two = new Room("You go home");
+        oneB = new Room("You are on the first level");
+        three = new Room("You are east of the first level");
+        four = new Room("You are west of the first level");
+        five = new Room("You are westside of level two");
+        six = new Room("You are eastside of level two");
+        seven = new Room("You are in level two main hall");
+        eight = new Room("You are on the third level");
+        nine = new Room("You find a secret room on the west side");
+        ten = new Room("You are on the fourth level");
+        eleven = new Room("You are on the fifth level");
+        twelve = new Room("You are westside the lowest level of the dungen");
+        thirteen = new Room("You are eastside the lowest level of the dungen");
+        fourteen = new Room("You found an empty room");
+        fifthteen = new Room("You found a chest but it needs a room");
+        
+        
         
         // initialise room exits
-        outside.setExit("east", theater);
-        outside.setExit("south", lab);
-        outside.setExit("west", pub);
+        oneA.setExit("south", two);
+        oneA.setExit("Forward", oneB);
+        
+        oneB.setExit("left", three);
+        oneB.setExit("right", four);
+        oneB.setExit("back", oneA);
+        
+        three.setExit("Forward", six);
+        three.setExit("left", oneB);
+        
+        four.setExit("Forward", five);
+        four.setExit("right", oneB);
+        
+        five.setExit("Forward", nine);
+        five.setExit("right", seven);
+        five.setExit("back", four);
+        
+        six.setExit("left", seven);
+        six.setExit("back", three);
+        
+        seven.setExit("Forward", eight);
+        seven.setExit("left", five);
+        seven.setExit("right", six);
+        
+        eight.setExit("Forward", ten);
+        eight.setExit("back", seven);
+        
+        nine.setExit("back", five);
+        
+        ten.setExit("Forward", eleven);
+        ten.setExit("back", eight);
+        
+        eleven.setExit("left", twelve);
+        eleven.setExit("right", thirteen);
+        eleven.setExit("back", ten);
+        
+        twelve.setExit("down", fourteen);
+        twelve.setExit("right", eleven);
+        
+        fourteen.setExit("up", twelve);
+        
+        thirteen.setExit("down", fourteen);
+        thirteen.setExit("left", eleven);
+        
+        fifthteen.setExit("leave", two);
+        
+        // initialise room items
+        nine.setItem("A Key", "Looks important");
 
-        theater.setExit("west", outside);
-
-        pub.setExit("east", outside);
-
-        lab.setExit("north", outside);
-        lab.setExit("east", office);
-
-        office.setExit("west", lab);
-
-        currentRoom = outside;  // start game outside
+        // start game outside
+        currentRoom = oneA;
     }
 
+    
+    
     /**
      *  Main play routine.  Loops until end of play.
      */
@@ -77,7 +145,7 @@ public class Game
         }
         System.out.println("Thank you for playing.  Good bye.");
     }
-
+    
     /**
      * Print out the opening message for the player.
      */
