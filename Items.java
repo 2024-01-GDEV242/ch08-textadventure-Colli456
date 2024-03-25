@@ -1,24 +1,24 @@
 
 /**
- * Write a description of class Items here.
- *
+ * Item.java. Holds information about each item in the game.
+ * 
  * @author  Collie Clarke
  * @version 2024.03.11
  */
 public class Items
 {
     // instance variables - replace the example below with your own
-    private String description;
-    private String name;
+    private String iDescription;
+    private String iName;
     //private int weight;
 
     /**
      * Constructor for objects of class Items
      */
-    public Items(String description, String iname)
+    public Items(String iDescription, String iName)
     {
-        this.description = description;
-        this.name = iname;      
+        this.iDescription = iDescription;
+        this.iName = iName;      
         //this.weight = weight;
     }
     
@@ -27,7 +27,7 @@ public class Items
      */
     public String getShortDescription()
     {
-        return description;
+        return iDescription;
     }
     
     /**
@@ -35,7 +35,7 @@ public class Items
      */
     public String getName()
     {
-        return name; 
+        return iName; 
     }
     //**
     //* Return the weight of the item 

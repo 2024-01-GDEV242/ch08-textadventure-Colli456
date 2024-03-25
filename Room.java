@@ -21,7 +21,9 @@ public class Room
     private String description;
     private HashMap<String, Room> exits;        // stores exits of this room.
     private HashMap<String, Items> items;       // stores items of this room.
-
+    private HashMap<String, NPC> npcs;
+    private HashMap<String, Door> doors;
+    
     /**
      * Create a room described "description". Initially, it has
      * no exits. "description" is something like "a kitchen" or
@@ -31,8 +33,19 @@ public class Room
     public Room(String description) 
     {
         this.description = description;
-        exits = new HashMap<>();
-        items = new HashMap<>();
+        exits = new HashMap<String, Room>();
+        items = new HashMap<String, Items>();
+        npcs = new HashMap<String, NPC>();
+        doors = new HashMap<String, Door>();
+    }
+    
+    /**
+     * Adds an NPC described by a name/desc.
+     */
+    public void addNPC(String name, String description)
+    {     
+        NPC newNPC = new NPC(name, description);
+        npcs.put(name, newNPC);
     }
     
      /**
@@ -45,7 +58,22 @@ public class Room
         Items newItem = new Items(description, iname);
         items.put(iname, newItem);
     }
-
+    
+    public Items delItem(String name)
+    {
+        Set<String> keys = items.keySet();
+        for(String item : keys) {
+            if (item.equals(name))
+            {
+                Items temp = items.get(name);
+                items.remove(name);
+                return temp;
+            }
+        }
+        System.out.println("That isn't here");
+        return null;
+    }
+    
     /**
      * Define an exit from this room.
      * @param direction The direction of the exit.
@@ -63,7 +91,16 @@ public class Room
     {
         addItem(item); 
     }
-
+    
+    /**
+     * Defines a lockable exit, or door, for the room.
+     */
+    public void setDoor(String direction, Room neighbor, boolean locked)
+    {
+        Door temp = new Door(direction, neighbor, locked);
+        doors.put(direction, temp);
+    }
+    
     /**
      * @return The short description of the room
      * (the one that was defined in the constructor).
@@ -108,6 +145,37 @@ public class Room
     public Room getExit(String direction) 
     {
         return exits.get(direction);
+    }
+    
+    public Room getDoor(String direction)
+    {
+        Door tempDoor = doors.get(direction);
+        if (tempDoor != null)
+        {
+            return tempDoor.getNeighbor();
+        }
+        
+        return null;
+    }
+    
+    public boolean getLocked(String direction)
+    {
+        return doors.get(direction).getLocked();
+    }
+    
+    public Door getActualDoor(String direction)
+    {
+        return doors.get(direction);
+    }
+    
+    public Items getItem(String name)
+    {
+        return items.get(name);
+    }
+    
+    public NPC getNPC()
+    {
+        return npcs.entrySet().iterator().next().getValue();
     }
 }
 

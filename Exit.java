@@ -1,6 +1,6 @@
 
 /**
- * Write a description of class Exit here.
+ * Exit.java. Stores information on exits
  *
  * @author  Collie Clarke
  * @version 2024.03.11
@@ -8,7 +8,7 @@
 public class Exit
 {
     // instance variables - replace the example below with your own
-    private String direction;
+    private String eDirection;
     private Room neighbor;
 
     /**
@@ -26,13 +26,13 @@ public class Exit
     public Exit(String direction, Room neighbor)
     {
         // initialise instance variables
-        this.direction = direction;
+        this.eDirection = direction;
         this.neighbor = neighbor;
     }
     
     public String getDirection()
     {
-        return direction;
+        return eDirection;
     }
     
     public Room getNeighbor()
@@ -42,7 +42,7 @@ public class Exit
     
     public void setDirection(String direction)
     {
-        this.direction = direction;
+        this.eDirection = direction;
     }
     
     public void setNeighbor(Room neighbor)

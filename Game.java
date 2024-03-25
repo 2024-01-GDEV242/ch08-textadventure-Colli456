@@ -19,6 +19,8 @@ public class Game
 {
     private Parser parser;
     private Room currentRoom;
+    private Player player;
+    private NPC porter;
         
     /**
      * Create the game and initialise its internal map.
@@ -68,12 +70,12 @@ public class Game
         twelve = new Room("You are westside the lowest level of the dungen");
         thirteen = new Room("You are eastside the lowest level of the dungen");
         fourteen = new Room("You found an empty room");
-        fifthteen = new Room("You found a chest but it needs a room");
+        fifthteen = new Room("You found a portal but it needs a key");
         
         
         
         // initialise room exits
-        oneA.setExit("south", two);
+        oneA.setDoor("secret", two, true);
         oneA.setExit("Forward", oneB);
         
         oneB.setExit("left", three);
@@ -117,10 +119,12 @@ public class Game
         thirteen.setExit("down", fourteen);
         thirteen.setExit("left", eleven);
         
-        fifthteen.setExit("leave", two);
+        fifthteen.setDoor("leave", two, true);
         
         // initialise room items
         nine.setItem("A Key", "Looks important");
+        
+        oneA.addNPC("Dwarf", "Guardian");
 
         // start game outside
         currentRoom = oneA;
@@ -182,6 +186,22 @@ public class Game
             case GO:
                 goRoom(command);
                 break;
+                
+            case LOOK:
+                look();
+                break;
+                
+            case LOCK:
+                lockDoor(command);
+                break;
+                
+            case UNLOCK:
+                unlockDoor(command);
+                break;
+                
+            case TAKE:
+                takeItem(command);
+                break;
 
             case QUIT:
                 wantToQuit = quit(command);
@@ -191,7 +211,57 @@ public class Game
     }
 
     // implementations of user commands:
-
+    
+    /** 
+     * "Lock" was entered. Locks the specified door, if a key's in
+     * the player's inventory, otherwise throws an error.
+     */
+    private void lockDoor(Command command)
+    {
+        if(!command.hasSecondWord())
+        {
+            System.out.println("Lock what");
+            return;
+        }
+        
+        String desiredDoor = command.getSecondWord();
+        
+        if (player.checkKey())
+        {
+            player.getCurrentRoom().getActualDoor(desiredDoor).lock();
+            System.out.println("Door locked");
+        }
+        else
+        {
+            System.out.println("You don't have a key!");
+        }
+    }
+    
+     /** 
+     * "Unlock" was entered. Unlocks the specified door, if a key's in
+     * the player's inventory, otherwise throws an error.
+     */
+    private void unlockDoor(Command command)
+    {
+        if(!command.hasSecondWord())
+        {
+            System.out.println("Unlock what");
+            return;
+        }
+        
+        String desiredDoor = command.getSecondWord();
+        
+        if (player.checkKey())
+        {
+            player.getCurrentRoom().getActualDoor(desiredDoor).unlock();
+            System.out.println("Door unlocked");
+        }
+        else
+        {
+            System.out.println("You don't have a key!");
+        }
+    }
+    
     /**
      * Print out some help information.
      * Here we print some stupid, cryptic message and a list of the 
@@ -231,7 +301,31 @@ public class Game
             System.out.println(currentRoom.getLongDescription());
         }
     }
-
+    
+    /** 
+     * "Take" was entered. Takes the specified item if it's in 
+     * the room, otherwise throws an error.
+     */
+    private void takeItem(Command command)
+    {
+        if (!command.hasSecondWord())
+        {
+            System.out.println("Take what?");
+            return;
+        }
+        
+        String desiredItem = command.getSecondWord();
+        
+        Items temp = player.getCurrentRoom().delItem(desiredItem);
+        if (temp != null)
+        {
+            player.addInventory(temp.getName(), temp.getShortDescription());
+            
+            System.out.println(player.getCurrentRoom().getLongDescription());
+            System.out.println(player.getInventoryString());
+        }
+    }
+    
     /** 
      * "Quit" was entered. Check the rest of the command to see
      * whether we really quit the game.

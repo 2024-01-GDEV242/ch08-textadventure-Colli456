@@ -1,6 +1,7 @@
 
 /**
- * Write a description of class Door here.
+ * Stores information and provides locking
+ * and unlocking of doors.
  *
  * @author  Collie Clarke
  * @version 2024.03.11
