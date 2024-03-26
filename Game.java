@@ -19,6 +19,7 @@ public class Game
 {
     private Parser parser;
     private Room currentRoom;
+    private Room finalRoom;
     private Player player;
     private NPC porter;
         
@@ -29,6 +30,7 @@ public class Game
     {
         createRooms();
         parser = new Parser();
+        player = new Player();
     }
 
     /**
@@ -72,7 +74,7 @@ public class Game
         fourteen = new Room("You found an empty room");
         fifthteen = new Room("You found a portal but it needs a key");
         
-        
+        finalRoom = two;
         
         // initialise room exits
         oneA.setDoor("secret", two, true);
@@ -116,13 +118,15 @@ public class Game
         
         fourteen.setExit("up", twelve);
         
-        thirteen.setExit("down", fourteen);
+        thirteen.setExit("down", fifthteen);
         thirteen.setExit("left", eleven);
         
-        fifthteen.setDoor("leave", two, true);
+        fifthteen.setDoor("leave", two, false);
+        fifthteen.setExit("back", thirteen);
         
         // initialise room items
-        nine.setItem("A Key", "Looks important");
+        nine.setItem("Key", "Key");
+        //Items key = new Items("Key", "Key");
         
         oneA.addNPC("Dwarf", "Guardian");
 
@@ -130,8 +134,6 @@ public class Game
         currentRoom = oneA;
     }
 
-    
-    
     /**
      *  Main play routine.  Loops until end of play.
      */
@@ -144,8 +146,15 @@ public class Game
                 
         boolean finished = false;
         while (! finished) {
-            Command command = parser.getCommand();
-            finished = processCommand(command);
+            if (currentRoom == finalRoom)
+            {
+                finished = true;
+            }
+            else
+            {
+                Command command = parser.getCommand();
+                finished = processCommand(command);
+            }
         }
         System.out.println("Thank you for playing.  Good bye.");
     }
@@ -292,12 +301,21 @@ public class Game
 
         // Try to leave current room.
         Room nextRoom = currentRoom.getExit(direction);
+        Room nextDoor = currentRoom.getDoor(direction);
 
         if (nextRoom == null) {
             System.out.println("There is no door!");
         }
         else {
             currentRoom = nextRoom;
+            System.out.println(currentRoom.getLongDescription());
+        }
+        
+        if (nextDoor == null) {
+            System.out.println("The door is locked!");
+        }
+        else {
+            currentRoom = nextDoor;
             System.out.println(currentRoom.getLongDescription());
         }
     }

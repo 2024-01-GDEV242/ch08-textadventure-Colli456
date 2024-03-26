@@ -53,12 +53,21 @@ public class Room
      * @param iname - The name of the item.
      * @param description - The description of the item.
      */
-    public void setItem(String iname, String description)
+    public void setItem(String name, String description)
     {
-        Items newItem = new Items(description, iname);
-        items.put(iname, newItem);
+        Set<String> keys = items.keySet();
+        for(String item : keys) {
+            if (item.equals(name)){
+                return;
+            }
+        }       
+        Items newItem = new Items(description, name);
+        items.put(name, newItem);
     }
     
+    /**
+     * Removes an item from the room and returns it.
+     */
     public Items delItem(String name)
     {
         Set<String> keys = items.keySet();
@@ -118,7 +127,7 @@ public class Room
      */
     public String getLongDescription()
     {
-        return "You are " + description + ".\n" + getExitString();
+        return description + ".\n" + getExitString() + ".\n" + getDoorString() + ".\n" + getItemString() + ".\n" + getNPCString();
     }
 
     /**
@@ -135,7 +144,49 @@ public class Room
         }
         return returnString;
     }
-
+    
+    /**
+     * Return a string describing the doors
+     * @return Details of the room's doors.
+     */
+    private String getDoorString()
+    {
+        String returnString = "Doors:";
+        Set<String> keys = doors.keySet();
+        for(String door : keys) {
+            returnString += " " + door;
+        }
+        return returnString;
+    }
+    
+    /**
+     * Return a string describing the items
+     * @return Details of the room's items.
+     */
+    private String getItemString()
+    {
+        String returnString = "Items:";
+        Set<String> keys = items.keySet();
+        for(String item : keys) {
+            returnString += " " + item;
+        }
+        return returnString;
+    }
+    
+    /**
+     * Return a string describing the items
+     * @return Details of the room's items.
+     */
+    private String getNPCString()
+    {
+        String returnString = "NPC:";
+        Set<String> keys = npcs.keySet();
+        for(String npc : keys) {
+            returnString += " " + npc;
+        }
+        return returnString;
+    }
+    
     /**
      * Return the room that is reached if we go from this room in direction
      * "direction". If there is no room in that direction, return null.

@@ -8,16 +8,16 @@
 public class NPC extends Player
 {
     // instance variables - replace the example below with your own
-    private String nName;
-    private String nDescription;
+    private String name;
+    private String description;
 
     /**
      * Constructor for objects of class NPC
      */
     public NPC(String name, String description)
     {
-        this.nDescription = description;
-        this.nName = name;
+        this.description = description;
+        this.name = name;
     }
 
     /**
@@ -25,7 +25,7 @@ public class NPC extends Player
      */
     public String getDescription()
     {
-        return nDescription;
+        return description;
     }
     
     /**
@@ -33,6 +33,6 @@ public class NPC extends Player
      */
     public String getName()
     {
-        return nName;
+        return name;
     }
 }

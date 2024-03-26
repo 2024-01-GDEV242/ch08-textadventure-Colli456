@@ -8,17 +8,17 @@
 public class Items
 {
     // instance variables - replace the example below with your own
-    private String iDescription;
-    private String iName;
+    private String description;
+    private String name;
     //private int weight;
 
     /**
      * Constructor for objects of class Items
      */
-    public Items(String iDescription, String iName)
+    public Items(String description, String name)
     {
-        this.iDescription = iDescription;
-        this.iName = iName;      
+        this.description = description;
+        this.name = name;      
         //this.weight = weight;
     }
     
@@ -27,7 +27,7 @@ public class Items
      */
     public String getShortDescription()
     {
-        return iDescription;
+        return description;
     }
     
     /**
@@ -35,7 +35,7 @@ public class Items
      */
     public String getName()
     {
-        return iName; 
+        return name; 
     }
     //**
     //* Return the weight of the item 
