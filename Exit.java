@@ -8,7 +8,7 @@
 public class Exit
 {
     // instance variables - replace the example below with your own
-    private String eDirection;
+    private String direction;
     private Room neighbor;
 
     /**
@@ -26,13 +26,13 @@ public class Exit
     public Exit(String direction, Room neighbor)
     {
         // initialise instance variables
-        this.eDirection = direction;
+        this.direction = direction;
         this.neighbor = neighbor;
     }
     
     public String getDirection()
     {
-        return eDirection;
+        return direction;
     }
     
     public Room getNeighbor()
@@ -42,7 +42,7 @@ public class Exit
     
     public void setDirection(String direction)
     {
-        this.eDirection = direction;
+        this.direction = direction;
     }
     
     public void setNeighbor(Room neighbor)

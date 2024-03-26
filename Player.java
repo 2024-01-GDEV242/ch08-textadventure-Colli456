@@ -63,6 +63,20 @@ public class Player
     /**
      * Adds the item of name and description to the inventory.
      */
+    public String getExamineString(String name)
+    {
+        String returnString = "You examine the " + name + ".\n";
+        Items temp = inventory.get(name);
+        if (temp != null) {
+            returnString += "It's " + temp.getShortDescription() + ".";
+            return returnString;
+        }
+        return "You can only examine items in your inventory.";
+    }
+    
+    /**
+     * Adds the item of name and description to the inventory.
+     */
     public void addInventory(String name, String description)
     {
         Set<String> keys = inventory.keySet();
@@ -80,5 +94,27 @@ public class Player
     public void addInventory(Items item)
     {
         inventory.put(item.getName(), item);
+    }
+    
+    public Items dropInventory(String name)
+    {
+        Set<String> keys = inventory.keySet();
+        for(String item : keys) {
+            if (item.equals(name))
+            {
+                Items temp = inventory.get(name);
+                inventory.remove(name);
+                return temp;
+            }
+        }
+        System.out.println("We've haven't got one!");
+        return null;
+    }
+    
+    public Items dropInventory()
+    {
+        Items temp = inventory.entrySet().iterator().next().getValue();
+        inventory.clear();
+        return temp;
     }
 }

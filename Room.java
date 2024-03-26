@@ -42,9 +42,14 @@ public class Room
     /**
      * Adds an NPC described by a name/desc.
      */
-    public void addNPC(String name, String description)
+    public void addNPC(String name, String description, String itemname, String itemdesc)
     {     
-        NPC newNPC = new NPC(name, description);
+        Set<String> keys = npcs.keySet();
+        for(String npc : keys)
+            if (npc.equals(name))
+                return;
+                
+        NPC newNPC = new NPC(name, description, itemname, itemdesc);
         npcs.put(name, newNPC);
     }
     
@@ -56,11 +61,10 @@ public class Room
     public void setItem(String name, String description)
     {
         Set<String> keys = items.keySet();
-        for(String item : keys) {
-            if (item.equals(name)){
+        for(String item : keys) 
+            if (item.equals(name))
                 return;
-            }
-        }       
+                   
         Items newItem = new Items(description, name);
         items.put(name, newItem);
     }

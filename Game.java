@@ -77,7 +77,7 @@ public class Game
         finalRoom = two;
         
         // initialise room exits
-        oneA.setDoor("secret", two, true);
+        oneA.setDoor("secret", two, false);
         oneA.setExit("Forward", oneB);
         
         oneB.setExit("left", three);
@@ -121,14 +121,14 @@ public class Game
         thirteen.setExit("down", fifthteen);
         thirteen.setExit("left", eleven);
         
-        fifthteen.setDoor("leave", two, false);
+        fifthteen.setDoor("leave", two, true);
         fifthteen.setExit("back", thirteen);
         
         // initialise room items
         nine.setItem("Key", "Key");
         //Items key = new Items("Key", "Key");
         
-        oneA.addNPC("Dwarf", "Guardian");
+        oneA.addNPC("Dwarf", "Guardian", "Clue", "A helpful clue");
 
         // start game outside
         currentRoom = oneA;
@@ -291,7 +291,8 @@ public class Game
      */
     private void goRoom(Command command) 
     {
-        if(!command.hasSecondWord()) {
+        if(!command.hasSecondWord()) 
+        {
             // if there is no second word, we don't know where to go...
             System.out.println("Go where?");
             return;
@@ -302,22 +303,32 @@ public class Game
         // Try to leave current room.
         Room nextRoom = currentRoom.getExit(direction);
         Room nextDoor = currentRoom.getDoor(direction);
-
-        if (nextRoom == null) {
-            System.out.println("There is no door!");
-        }
-        else {
-            currentRoom = nextRoom;
-            System.out.println(currentRoom.getLongDescription());
+        
+        if (nextDoor != null) 
+        {
+            if (player.getCurrentRoom().getLocked(direction) == true)
+            {
+                System.out.println("The door is locked!");
+                return;
+            }
+            else
+            {
+                currentRoom = nextDoor;
+                System.out.println(currentRoom.getLongDescription());
+                System.out.println(player.getInventoryString());
+                return;
+            }
         }
         
-        if (nextDoor == null) {
-            System.out.println("The door is locked!");
-        }
-        else {
-            currentRoom = nextDoor;
+        if (nextRoom == null) 
+            System.out.println("There is no door!");
+        else
+        {
+            currentRoom = nextRoom;
             System.out.println(currentRoom.getLongDescription());
+            System.out.println(player.getInventoryString());
         }
+    
     }
     
     /** 
@@ -338,6 +349,26 @@ public class Game
         if (temp != null)
         {
             player.addInventory(temp.getName(), temp.getShortDescription());
+            
+            System.out.println(player.getCurrentRoom().getLongDescription());
+            System.out.println(player.getInventoryString());
+        }
+    }
+    
+    private void dropItem(Command command)
+    {
+        if (!command.hasSecondWord())
+        {
+            System.out.println("Drop what?");
+            return;
+        }
+        
+        String droppedItem = command.getSecondWord();
+        
+        Items temp = player.dropInventory(droppedItem);
+        if (temp != null)
+        {
+            player.getCurrentRoom().setItem(temp.getName(), temp.getShortDescription());
             
             System.out.println(player.getCurrentRoom().getLongDescription());
             System.out.println(player.getInventoryString());

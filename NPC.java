@@ -14,10 +14,11 @@ public class NPC extends Player
     /**
      * Constructor for objects of class NPC
      */
-    public NPC(String name, String description)
+    public NPC(String name, String description, String itemname, String itemdesc)
     {
         this.description = description;
         this.name = name;
+        addInventory(itemname, itemdesc);
     }
 
     /**
